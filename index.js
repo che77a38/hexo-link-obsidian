@@ -19,6 +19,7 @@ hexo.extend.filter.register(
             content = data.content = await convertLinks(data, config && config.port || undefined, this.config.permalink.split(':abbrlink')[0])
         } catch (err){
             log.info('hexo-link-obsidian failed to convert', data.source, ': ', err.message)
+            log.info('[[[Error location]]]:', err.stack);
         }
 
         //获取图片链接
@@ -27,7 +28,7 @@ hexo.extend.filter.register(
         let online_images = []
         let pattern = /!\[(.*?)\]\((.*?)\)/g
         let regImg = new RegExp(
-            /\.(png|jpg|jpeg|gif|svg|ico|pdf|psd|bmp|rle|dib|tif|caw|nef|raf|orf|mrw|dcr|mos|raw|pef|srf|dng|x3f|cr2|erf|cin|dpx|gif|rla|rpf|img|el|eps|iff|tdi|pcx|hdr|rgbe|xyze|sgi|bw|rgb|pic|tga|vda|icb|vst|tif|webp)$/
+            /\.(png|jpg|jpeg|gif|svg|ico|pdf|psd|bmp|rle|dib|tif|caw|nef|raf|orf|mrw|dcr|mos|raw|pef|srf|dng|x3f|cr2|erf|cin|dpx|gif|rla|rpf|img|el|eps|iff|tdi|pcx|hdr|rgbe|xyze|sgi|bw|rgb|pic|tga|vda|icb|vst|tif)$/
         );
         let dir_root = this.base_dir
         let dir_source = this.source_dir
@@ -107,7 +108,7 @@ function convertOnlineMediaEmbedLink(src, size = [720, 360]) {
                 }
                 let page = src.searchParams.get("p")
                 if (page) queryStr += `&page=${page}`
-                return `<iframe width="${size[0]}" height="${size[1]}" src="https://player.bilibili.com/player.html${queryStr}&high_quality=1&danmaku=0&as_wide=1&" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="bili-iframe"> </iframe>`
+                return `<iframe width="${size[0]}" height="${size[1]}" src="https://player.bilibili.com/player.html${queryStr}&high_quality=1&danmaku=0&as_wide=1&autoplay=0&" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="bili-iframe"> </iframe>`
             }
             break;
         case "youtube.com":
